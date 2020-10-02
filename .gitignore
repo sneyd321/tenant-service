@@ -1,0 +1,4 @@
+*.db
+__pycache__/
+mysql-volume/data/*
+!mysql-volume/data/.gitkeep
