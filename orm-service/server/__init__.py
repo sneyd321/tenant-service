@@ -11,7 +11,7 @@ def create_app(env):
     #Create app
     app = Flask(__name__)
     config = Config(app)
-    print(env)
+
     if env == "prod":
         app = config.productionConfig()
     elif env == "dev":

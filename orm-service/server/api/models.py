@@ -16,9 +16,12 @@ class Tenant(db.Model):
         self.firstName = tenantData["firstName"]
         self.lastName = tenantData["lastName"]
         self.email = tenantData["email"]
-        self.password = generate_password_hash(tenantData["password"])
+        self.password = tenantData["password"]
         self.isApproved = tenantData["isApproved"]
         self.houseId = tenantData["houseId"]
+
+    def generatePasswordHash(self, password):
+        self.password = generate_password_hash(password)
         
     def verifyPassword(self, password):
         return check_password_hash(self.password, password)
@@ -35,7 +38,7 @@ class Tenant(db.Model):
 
     
     def update(self):
-        rows = Tenant.query.filter(Tenant.email == self.email).update(self.toDict(), synchronize_session=False)
+        rows = Tenant.query.update(self.toDict(), synchronize_session=False)
         if rows == 1:
             try:
                 db.session.commit()
@@ -53,7 +56,7 @@ class Tenant(db.Model):
             Tenant.lastName: self.lastName,
             Tenant.email: self.email,
             Tenant.password: self.password,
-            Tenant.isApproved: self.isApproved
+            Tenant.isApproved: self.isApproved,
         }
 
     def toJson(self):
@@ -62,7 +65,6 @@ class Tenant(db.Model):
             "firstName": self.firstName,
             "lastName": self.lastName,
             "email": self.email,
-            "password": self.password,
             "isApproved": self.isApproved,
             "houseId": self.houseId
         }
