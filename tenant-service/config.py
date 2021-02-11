@@ -14,8 +14,9 @@ class Config:
         return self.app
 
     def developmentConfig(self):    
-        self.app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@192.168.0.107:3306/roomr"
+        self.app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@host.docker.internal:3306/roomr"
         self.app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+        self.app.config["SECRET_KEY"] = "FDSAFASFDASFDASGBFRSHBDSSFASDF"
         return self.app
 
     def testConfig(self):

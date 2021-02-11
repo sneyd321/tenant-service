@@ -10,12 +10,13 @@ from server.api.models import Tenant
 def create_tenant():
     form = TenantForm()
     attrs = list(form._fields.values())
-    if form.validate_on_submit():
+    if request.method == 'POST':
         data = request.form
+        print(data)
         tenant = Tenant(data)
         tenant.generatePasswordHash(data["password"])
         if tenant.insert():
-            return jsonify(tenant.toJson())
+            return "<h1>Account successfully created</h1>"
         return render_template("signupTemplate.html", form=form, fields=attrs[:-1], conflict="Error: Account already exists")
     return render_template("signupTemplate.html", form=form, fields=attrs[:-1], conflict="")
 
@@ -36,27 +37,13 @@ def update_tenant(tenantId):
 
 @tenant.route("House/<int:houseId>/Tenant")
 def get_tenants_by_house_id(houseId):
-    print("House Tenant")
     tenants = Tenant.query.filter(Tenant.houseId == houseId).all()
     return jsonify([tenant.toJson() for tenant in tenants])
-    
-
-
-@tenant.route("verifyTenant", methods=["GET"])
-def verify_tenant():
-    bearer = request.headers.get("Authorization")
-    if bearer:
-        tenant = Tenant.verify_auth_token(bearer[7:])
-        if tenant:
-            return jsonify({"tenantId": tenant.id})
-        return Response(response="Not Found", status=404)
-    return Response(response="Not Authenticated", status=401)
 
 
 @tenant.route("Tenant", methods=["GET"])
 def get_tenant():
     bearer = request.headers.get("Authorization")
-
     if bearer:
         tenant = Tenant.verify_auth_token(bearer[7:])
         if tenant:
