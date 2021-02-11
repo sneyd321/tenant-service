@@ -10,10 +10,11 @@ class Config:
     def productionConfig(self):    
         self.app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://admin:admin@mysql:3306/roomr"
         self.app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+        self.app.config["SECRET_KEY"] = "FDSAFASFDASFDASGBFRSHBDSSFASDF"
         return self.app
 
     def developmentConfig(self):    
-        self.app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://admin:admin@127.0.0.1:3306/roomr"
+        self.app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@192.168.0.107:3306/roomr"
         self.app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
         return self.app
 

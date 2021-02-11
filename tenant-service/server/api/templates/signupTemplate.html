@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Webpage</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />    
+
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+        * {box-sizing: border-box;}
+        
+        h2 {
+            color: #006BA6;
+        }
+     
+        label {
+          width: 100%;
+          padding: 10px;
+          outline: none;
+        }
+        .mdc-text-field-helper-line {
+            margin-bottom: 5px;
+        }
+       
+        /* Set a style for the submit button */
+        button {
+          background-color: #006BA6;
+          color: white;
+          padding: 15px 20px;
+          border: none;
+          cursor: pointer;
+          width: 100%;
+          opacity: 0.9;
+        }
+
+        
+        button:hover {
+          opacity: 1;
+        }
+        </style>
+</head>
+<body>
+    <h2>Sign Up Tenant</h2>
+    <form method="POST" action="/tenant/v1/">
+        {{ form.csrf_token }}
+
+
+        {% for item in fields %}
+      
+        
+            {% if item.errors[0] %}
+                <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" >
+                    <span class="mdc-notched-outline" style="color: red;" >
+                    <span class="mdc-notched-outline__leading" ></span>
+                    <span class="mdc-notched-outline__notch" >
+                        <span class="mdc-floating-label" style="color: red;" id="my-label-id">{{ item.label }}</span>
+                    </span>
+                    <span class="mdc-notched-outline__trailing"></span>
+                    </span>
+                    <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" >{{ item.render_kw["icon"] }}</i>
+                    {{ item( **{"class": "mdc-text-field__input", 
+                                "aria-labelledby": "my-label-id",
+                                "type": "text"}) }}
+                </label>
+    
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text" style="color: red;" id="my-helper-id" aria-required="true">{{item.errors[0]}}</div>
+                </div>   
+                   
+            {% else %}
+                <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
+                    <span class="mdc-notched-outline">
+                    <span class="mdc-notched-outline__leading"></span>
+                    <span class="mdc-notched-outline__notch">
+                        <span class="mdc-floating-label" id="my-label-id">{{ item.label }}</span>
+                    </span>
+                    <span class="mdc-notched-outline__trailing"></span>
+                    </span>
+                    <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" >{{ item.render_kw["icon"] }}</i>
+                    {{ item( **{"class": "mdc-text-field__input", 
+                                        "aria-labelledby": "my-label-id"
+                                    }) }}
+                </label>
+        
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text"  id="my-helper-id" aria-required="true">{{ item.render_kw["helperText"] }}</div>
+                </div>       
+
+            {% endif %}
+
+
+        {% endfor %}
+        <button type="submit" >Sign Up</button>
+        <p style="color: red;">{{conflict}}</p>
+
+
+    </form>
+    <script>
+        const textFields = [].map.call(document.querySelectorAll('.mdc-text-field'), function(el) {
+            return mdc.textField.MDCTextField.attachTo(el);
+        });
+    </script>
+
+</body>
+</html>
+

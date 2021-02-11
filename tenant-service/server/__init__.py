@@ -6,10 +6,11 @@ import pymysql
 pymysql.install_as_MySQLdb()
 
 db = SQLAlchemy()
+app = Flask(__name__)
 
 def create_app(env):
     #Create app
-    app = Flask(__name__)
+    global app
     config = Config(app)
 
     if env == "prod":
