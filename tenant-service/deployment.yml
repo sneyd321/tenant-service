@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tenant-service
+spec:
+  selector:
+    matchLabels:
+      run: tenant-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: tenant-service
+    spec:
+      containers:
+      - name: tenant-service
+        image: sneyd321/tenant-service
+        ports:
+        - containerPort: 8083
+        
+      imagePullSecrets:
+        - name: key

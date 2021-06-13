@@ -15,10 +15,9 @@ class TenantForm(FlaskForm):
     validators=[InputRequired("Please enter an email"), Email("Please enter a valid email")],
     render_kw={"icon": "email", "required": False, "helperText": "Ex. name@example.com"})
 
-    houseId = IntegerField("House Id",
-    validators=[InputRequired("Please enter a house id")],
-    render_kw={"icon": "home", "required": False, "helperText": "Ex. 123-456-7890"})
-
+    phoneNumber = StringField("Phone Number",
+    validators=[InputRequired("Please enter a phone number")],
+    render_kw={"icon": "smartphone", "required": False, "helperText": "Ex. 123-456-7890", "type": "tel"})
 
     password = PasswordField("Password", validators=[InputRequired("Please enter a Password"), EqualTo("reTypePassword", "Passwords must match")]
     ,render_kw={"icon": "vpn_key", "required": False, "helperText": "Word a phrase to keep secret"})

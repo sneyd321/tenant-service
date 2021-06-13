@@ -9,17 +9,19 @@ class Tenant(db.Model):
     firstName = db.Column(db.String(100))
     lastName = db.Column(db.String(100))
     email = db.Column(db.String(120), index=True, unique=True)
+    phoneNumber = db.Column(db.String(15))
     password = db.Column(db.String(100))
     isApproved = db.Column(db.Boolean())
     houseId = db.Column(db.Integer(), nullable=False)
 
-    def __init__(self, tenantData):
-        self.firstName = tenantData["firstName"]
-        self.lastName = tenantData["lastName"]
-        self.email = tenantData["email"]
-        self.password = tenantData["password"]
+    def __init__(self, **tenantData):
+        self.firstName = tenantData.get("firstName", "")
+        self.lastName = tenantData.get("lastName", "")
+        self.email = tenantData.get("email", "")
+        self.password = tenantData.get("password", "")
+        self.phoneNumber = tenantData.get("phoneNumber", "")
         self.isApproved = False
-        self.houseId = tenantData["houseId"]
+        self.houseId = 0
 
     def generatePasswordHash(self, password):
         self.password = generate_password_hash(password)

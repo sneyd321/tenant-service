@@ -43,7 +43,9 @@
 </head>
 <body>
     <h2>Sign Up Tenant</h2>
-    <form method="POST" action="/tenant/v1/">
+    <!-- <form method="POST" action="http://34.107.132.144/tenant-gateway/v1/"> -->
+    <form method="POST" action="{{ url }}">  
+       
         {{ form.csrf_token }}
 
 
