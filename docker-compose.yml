@@ -1,0 +1,11 @@
+version: '3.5'
+
+services: 
+    tenant-service:
+        image: sneyd321/tenant-service
+        ports: 
+            - 8083:8083
+        volumes:
+            - ./tenant-service:/usr/src/app 
+
+
