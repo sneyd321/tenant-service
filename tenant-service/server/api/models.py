@@ -12,6 +12,7 @@ class Tenant(db.Model):
     phoneNumber = db.Column(db.String(15))
     password = db.Column(db.String(100))
     isApproved = db.Column(db.Boolean())
+    imageURL = db.Column(db.String(250), nullable=True)
     houseId = db.Column(db.Integer(), nullable=False)
 
     def __init__(self, **tenantData):
@@ -22,6 +23,7 @@ class Tenant(db.Model):
         self.phoneNumber = tenantData.get("phoneNumber", "")
         self.isApproved = False
         self.houseId = 0
+        self.imageURL = None
 
     def generatePasswordHash(self, password):
         self.password = generate_password_hash(password)
@@ -58,7 +60,14 @@ class Tenant(db.Model):
             Tenant.lastName: self.lastName,
             Tenant.email: self.email,
             Tenant.password: self.password,
-            Tenant.isApproved: self.isApproved
+            Tenant.isApproved: self.isApproved,
+            Tenant.phoneNumber: self.phoneNumber,
+            Tenant.imageURL: self.imageURL
+        }
+
+    def getId(self):
+        return {
+            "tenantId": self.id
         }
 
     def toJson(self):
@@ -69,8 +78,15 @@ class Tenant(db.Model):
             "email": self.email,
             "isApproved": self.isApproved,
             "houseId": self.houseId,
-            "authToken": self.generate_auth_token().decode("utf-8")
+            "phoneNumber": self.phoneNumber,
+            "imageURL": self.imageURL
         }
+
+    def getAuthToken(self):
+        return {
+            "authToken": self.generate_auth_token().decode("utf-8"),
+        }
+    
 
     def generate_auth_token(self, expiration = 600):
         s = Serializer(app.config['SECRET_KEY'], expires_in = expiration)

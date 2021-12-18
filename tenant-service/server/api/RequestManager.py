@@ -51,7 +51,7 @@ class RequestManager:
     def authenticate(self, **kwargs):
         headers = kwargs.get("headers", self.request.headers)
         try:
-            response = requests.get(self.service + "Verify", headers=headers)
+            response = requests.get("http://" + self.service + "/homeowner/v1/Verify", headers=headers)
             if response.ok:
                 homeownerData = response.json()
                 return homeownerData["homeownerId"]

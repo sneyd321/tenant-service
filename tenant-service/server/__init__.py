@@ -10,8 +10,8 @@ app = Flask(__name__)
 
 from kazoo.client import KazooClient, KazooState
 
-zk = KazooClient(hosts='host.docker.internal:2181')
-zk.start()
+zk = KazooClient()
+
 
 
 
@@ -27,13 +27,16 @@ def create_app(env):
 
     if env == "prod":
         app = config.productionConfig()
+        zk.set_hosts('zookeeper.default.svc.cluster.local:2181')
     elif env == "dev":
         app = config.developmentConfig()
+        zk.set_hosts('host.docker.internal:2181')
     elif env == "test":
         app = config.testConfig()
     else:
         return 
     
+    zk.start()
     migrate = Migrate(app, db)
     db.init_app(app)
     
